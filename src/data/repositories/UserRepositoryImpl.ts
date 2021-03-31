@@ -9,7 +9,6 @@ class UserDTO {
 
 export class UserRepositoryImpl implements UserRepository {
     json_url = "https://reqres.in/api/users"
-
     async GetUsers(): Promise<User[]> {
         const res = await fetch(this.json_url)
         const jsonData = await res.json()

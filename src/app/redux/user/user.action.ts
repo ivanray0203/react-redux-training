@@ -7,8 +7,11 @@ export const refreshUser = async (dispatch: any) => {
 
     try {
         const userRepo = new UserRepositoryImpl()
+        console.log("user Repo", userRepo)
         const userService = new UserServiceImpl(userRepo)
+        console.log("userService", userService)
         const users = await userService.GetUsers()
+        console.log("users", users)
         console.log(users)
         dispatch({ type: USER_LOAD_SUCCESS, payload: users })
     } catch (error) {
