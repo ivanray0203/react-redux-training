@@ -1,4 +1,10 @@
-import { TODO_LIST_REQUEST, TODO_LIST_SUCCESS, TODO_LIST_FAILURE, RefreshTodoListSuccess } from "./Todo.types"
+import {
+    TODO_LIST_REQUEST,
+    TODO_LIST_SUCCESS,
+    TODO_LIST_FAILURE,
+    RefreshTodoListSuccess,
+    ADD_TODO_LIST,
+} from "./Todo.types"
 
 const initialState = {
     loading: false,
@@ -22,6 +28,11 @@ function todos(state = initialState, action: { type: string; payload: RefreshTod
                 ...state,
                 todos: action.payload,
                 loading: false,
+            }
+        case ADD_TODO_LIST:
+            return {
+                ...state,
+                todos: state.todos,
             }
         default:
             return state
