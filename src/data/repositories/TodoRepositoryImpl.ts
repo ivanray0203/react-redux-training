@@ -20,4 +20,15 @@ export class TodoRepositoryImpl implements TodoRepository {
         todoList.push(data)
         return todoList.map((todo: todoDTO) => new Todo(todo.id, todo.name))
     }
+
+    async DeleteTodo(id: number): Promise<Todo[]> {
+        const deleteTodo = todoList
+            .map((todo) => {
+                return todo.id
+            })
+            .indexOf(id)
+        todoList.splice(deleteTodo, 1)
+        console.log("Delete TODO", todoList)
+        return todoList
+    }
 }

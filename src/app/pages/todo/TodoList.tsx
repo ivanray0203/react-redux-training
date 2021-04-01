@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { connect, useDispatch } from "react-redux"
-import { refreshTodo, addTodo } from "../../redux/todo/Todo.action"
+import { refreshTodo, addTodo, deleteTodo } from "../../redux/todo/Todo.action"
 import { TodoProps, Todo } from "../../redux/todo/Todo.types"
 
 interface RootState {
@@ -13,7 +13,6 @@ const TodoList = ({ todos }: TodoProps) => {
     })
     const handleOnChange = (e: any) => {
         setData({ ...data, id: todos.length + 1, [e.target.name]: e.target.value })
-        console.log(e.target.value)
     }
     const dispatch = useDispatch()
     const handleClick = () => {
@@ -22,6 +21,9 @@ const TodoList = ({ todos }: TodoProps) => {
     const AddTodoOnClick = () => {
         dispatch(addTodo(data))
         dispatch(refreshTodo)
+    }
+    const DeleteTodo = (id: number) => {
+        dispatch(deleteTodo(id))
     }
     return (
         <div>
@@ -32,7 +34,10 @@ const TodoList = ({ todos }: TodoProps) => {
             </div>
             <ul>
                 {todos.map((todos: Todo) => (
-                    <li key={todos.id}>{todos.name}</li>
+                    <li key={todos.id}>
+                        {todos.name}
+                        <button onClick={() => DeleteTodo(todos.id)}>Delete</button>
+                    </li>
                 ))}
             </ul>
         </div>

@@ -4,6 +4,7 @@ import {
     TODO_LIST_FAILURE,
     RefreshTodoListSuccess,
     ADD_TODO_LIST,
+    DELETE_TODO_LIST,
 } from "./Todo.types"
 
 const initialState = {
@@ -30,6 +31,11 @@ function todos(state = initialState, action: { type: string; payload: RefreshTod
                 loading: false,
             }
         case ADD_TODO_LIST:
+            return {
+                ...state,
+                todos: state.todos,
+            }
+        case DELETE_TODO_LIST:
             return {
                 ...state,
                 todos: state.todos,
