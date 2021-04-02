@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { connect, useDispatch } from "react-redux"
-import { refreshTodo, addTodo, deleteTodo } from "../../redux/todo/Todo.action"
+import { refreshTodo, addTodo, deleteTodo, updateTodo, updateTodoStatus } from "../../redux/todo/Todo.action"
 import { TodoProps, Todo } from "../../redux/todo/Todo.types"
 
 interface RootState {
@@ -11,9 +11,15 @@ const TodoList = ({ todos }: TodoProps) => {
     const [data, setData] = useState({
         id: 0,
         name: "",
+        isCompleted: false,
+    })
+    const [toUpdate, setToUpdate] = useState({
+        id: 0,
+        name: "",
     })
     const handleOnChange = (e: any) => {
-        setData({ ...data, id: todos.length + 1, [e.target.name]: e.target.value })
+        setData({ ...data, id: todos.length + 1, [e.target.name]: e.target.value, isCompleted: false })
+        setToUpdate({ ...data, id: handleId, [e.target.name]: e.target.value })
     }
     const dispatch = useDispatch()
     const handleClick = () => {
@@ -24,16 +30,37 @@ const TodoList = ({ todos }: TodoProps) => {
         dispatch(refreshTodo)
         setData({ ...data, id: 0, name: "" })
     }
+    const [handleName, setHandleName] = useState("")
+    const [handleId, setHandleId] = useState(0)
     const DeleteTodo = (id: number) => {
         dispatch(deleteTodo(id))
     }
     const editData = (id: number, name: string) => {
         setEditable(true)
-        setData({ ...data, id: id, name: name })
+        setHandleName(name)
+        setHandleId(id)
+        setData({ ...data, id: 0, name: name })
     }
     const CancelEdit = () => {
         setEditable(false)
         setData({ ...data, id: 0, name: "" })
+    }
+    const UpdateData = () => {
+        if (handleName === data.name) {
+            alert("Error")
+        } else {
+            setToUpdate({ ...toUpdate, id: toUpdate.id, name: data.name })
+            dispatch(updateTodo(toUpdate))
+            setEditable(false)
+            setData({ ...data, id: 0, name: "" })
+        }
+    }
+    const changeStatus = (id: number, isCompleted: boolean) => {
+        const updateDataStatus = {
+            id: id,
+            isCompleted: !isCompleted,
+        }
+        dispatch(updateTodoStatus(updateDataStatus))
     }
     return (
         <div className="mt-2">
@@ -41,7 +68,9 @@ const TodoList = ({ todos }: TodoProps) => {
             <div className="row m-2">
                 <input className="col form-control" name="name" onChange={handleOnChange} value={data.name} />
                 {editable ? (
-                    <button className="btn btn-warning mx-2">Update</button>
+                    <button className="btn btn-warning mx-2" onClick={UpdateData}>
+                        Update
+                    </button>
                 ) : (
                     <button className="btn btn-primary mx-2" onClick={AddTodoOnClick}>
                         ADD TODO
@@ -58,10 +87,20 @@ const TodoList = ({ todos }: TodoProps) => {
             </div>
             {todos.map((todos: Todo) => (
                 <div key={todos.id} className="row m-3">
-                    <div className="col">
-                        <h4>{todos.name}</h4>
+                    <div className="mt-1">
+                        <input
+                            type="checkbox"
+                            className="form-conrol"
+                            checked={todos.isCompleted ? true : false}
+                            onChange={() => changeStatus(todos.id, todos.isCompleted)}
+                        />
                     </div>
-                    <div className="col">Completed</div>
+                    <div className="col">
+                        <h4 className={todos.isCompleted ? "completeTodo" : ""}>{todos.name}</h4>
+                    </div>
+                    <div className={todos.isCompleted ? "col completed" : "col notCompleted"}>
+                        {todos.isCompleted ? "COMPLETED" : "NOT COMPLETED"}
+                    </div>
                     <button className="btn btn-primary mx-1" onClick={() => editData(todos.id, todos.name)}>
                         Edit
                     </button>
@@ -75,7 +114,7 @@ const TodoList = ({ todos }: TodoProps) => {
 }
 
 const mapStateToProps = (state: RootState) => {
-    console.log(state.todos)
+    console.log("TodoList", state.todos)
     return {
         todos: state.todos.todos,
     }

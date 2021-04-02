@@ -1,4 +1,12 @@
-import { TODO_LIST_REQUEST, TODO_LIST_SUCCESS, TODO_LIST_FAILURE, ADD_TODO_LIST, DELETE_TODO_LIST } from "./Todo.types"
+import {
+    TODO_LIST_REQUEST,
+    TODO_LIST_SUCCESS,
+    TODO_LIST_FAILURE,
+    ADD_TODO_LIST,
+    DELETE_TODO_LIST,
+    UPDATE_TODO_LIST,
+    UPDATE_TODO_STATUS,
+} from "./Todo.types"
 import { TodoServiceImpl } from "../../../domain/usecases/TodoService"
 import { TodoRepositoryImpl } from "../../../data/repositories/TodoRepositoryImpl"
 
@@ -37,8 +45,41 @@ export const deleteTodo = (id: number) => {
             const todoRepo = new TodoRepositoryImpl()
             const todoService = new TodoServiceImpl(todoRepo)
             await todoService.DeleteTodo(id).then(() => {
-                const todo = todoService.GetTodos()
-                dispatch({ type: DELETE_TODO_LIST, payload: todo })
+                dispatch({ type: DELETE_TODO_LIST })
+                dispatch(refreshTodo)
+            })
+        } catch (error) {
+            console.log(error)
+            dispatch({ type: TODO_LIST_FAILURE })
+        }
+    }
+}
+
+export const updateTodo = (data: any) => {
+    return async function (dispatch: any) {
+        try {
+            const todoRepo = new TodoRepositoryImpl()
+            const todoService = new TodoServiceImpl(todoRepo)
+            console.log(todoService)
+            await todoService.UpdateTodo(data).then(() => {
+                dispatch({ type: UPDATE_TODO_LIST })
+                dispatch(refreshTodo)
+            })
+        } catch (error) {
+            console.log(error)
+            dispatch({ type: TODO_LIST_FAILURE })
+        }
+    }
+}
+
+export const updateTodoStatus = (data: any) => {
+    return async function (dispatch: any) {
+        try {
+            const todoRepo = new TodoRepositoryImpl()
+            const todoService = new TodoServiceImpl(todoRepo)
+            console.log(todoService)
+            await todoService.UpdateStatus(data).then(() => {
+                dispatch({ type: UPDATE_TODO_STATUS })
                 dispatch(refreshTodo)
             })
         } catch (error) {

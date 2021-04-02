@@ -4,3 +4,12 @@
 .not-display {
     display: none;
 }
+.completed {
+    color: green;
+}
+.notCompleted {
+    color: red
+}
+.completeTodo {
+    text-decoration: line-through;
+}
