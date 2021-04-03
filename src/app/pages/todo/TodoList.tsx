@@ -30,14 +30,12 @@ const TodoList = ({ todos }: TodoProps) => {
         dispatch(refreshTodo)
         setData({ ...data, id: 0, name: "" })
     }
-    const [handleName, setHandleName] = useState("")
     const [handleId, setHandleId] = useState(0)
-    const DeleteTodo = (id: number) => {
-        dispatch(deleteTodo(id))
+    const DeleteTodo = (data: any) => {
+        dispatch(deleteTodo(data))
     }
     const editData = (id: number, name: string) => {
         setEditable(true)
-        setHandleName(name)
         setHandleId(id)
         setData({ ...data, id: 0, name: name })
     }
@@ -46,14 +44,10 @@ const TodoList = ({ todos }: TodoProps) => {
         setData({ ...data, id: 0, name: "" })
     }
     const UpdateData = () => {
-        if (handleName === data.name) {
-            alert("Error")
-        } else {
-            setToUpdate({ ...toUpdate, id: toUpdate.id, name: data.name })
-            dispatch(updateTodo(toUpdate))
-            setEditable(false)
-            setData({ ...data, id: 0, name: "" })
-        }
+        setToUpdate({ ...toUpdate, id: toUpdate.id, name: data.name })
+        dispatch(updateTodo(toUpdate))
+        setEditable(false)
+        setData({ ...data, id: 0, name: "" })
     }
     const changeStatus = (id: number, isCompleted: boolean) => {
         const updateDataStatus = {
@@ -104,7 +98,7 @@ const TodoList = ({ todos }: TodoProps) => {
                     <button className="btn btn-primary mx-1" onClick={() => editData(todos.id, todos.name)}>
                         Edit
                     </button>
-                    <button className="btn btn-danger mx-1" onClick={() => DeleteTodo(todos.id)}>
+                    <button className="btn btn-danger mx-1" onClick={() => DeleteTodo(todos)}>
                         Delete
                     </button>
                 </div>
@@ -114,7 +108,6 @@ const TodoList = ({ todos }: TodoProps) => {
 }
 
 const mapStateToProps = (state: RootState) => {
-    console.log("TodoList", state.todos)
     return {
         todos: state.todos.todos,
     }

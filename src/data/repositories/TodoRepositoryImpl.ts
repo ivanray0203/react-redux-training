@@ -22,20 +22,18 @@ export class TodoRepositoryImpl implements TodoRepository {
         return todoList.map((todo: todoDTO) => new Todo(todo.id, todo.name, todo.isCompleted))
     }
 
-    async DeleteTodo(id: number): Promise<Todo[]> {
+    async DeleteTodo(data: any): Promise<Todo[]> {
         const deleteTodo = todoList
             .map((todo) => {
                 return todo.id
             })
-            .indexOf(id)
+            .indexOf(data.id)
         todoList.splice(deleteTodo, 1)
-        console.log("Delete TODO", todoList)
         return todoList
     }
     async UpdateTodo(data: any): Promise<Todo[]> {
         const updateTodoIndex = todoList.findIndex((obj) => obj.id === data.id)
         todoList[updateTodoIndex].name = data.name
-        console.log(todoList)
         return todoList
     }
     async UpdateStatus(data: any): Promise<Todo[]> {

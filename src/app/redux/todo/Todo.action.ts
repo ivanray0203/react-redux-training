@@ -60,7 +60,6 @@ export const updateTodo = (data: any) => {
         try {
             const todoRepo = new TodoRepositoryImpl()
             const todoService = new TodoServiceImpl(todoRepo)
-            console.log(todoService)
             await todoService.UpdateTodo(data).then(() => {
                 dispatch({ type: UPDATE_TODO_LIST })
                 dispatch(refreshTodo)
@@ -77,7 +76,6 @@ export const updateTodoStatus = (data: any) => {
         try {
             const todoRepo = new TodoRepositoryImpl()
             const todoService = new TodoServiceImpl(todoRepo)
-            console.log(todoService)
             await todoService.UpdateStatus(data).then(() => {
                 dispatch({ type: UPDATE_TODO_STATUS })
                 dispatch(refreshTodo)

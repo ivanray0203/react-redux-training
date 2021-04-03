@@ -15,8 +15,13 @@ export class TodoServiceImpl implements TodoRepository {
     async AddTodo(data: any): Promise<Todo[]> {
         return this.todoRepo.AddTodo(data)
     }
-    async DeleteTodo(id: number): Promise<Todo[]> {
-        return this.todoRepo.DeleteTodo(id)
+    async DeleteTodo(data: any): Promise<Todo[]> {
+        if (!data.isCompleted) {
+            return this.todoRepo.DeleteTodo(data)
+        } else {
+            alert("Competed Task Cannot be Deleted")
+            return data
+        }
     }
     async UpdateTodo(data: any): Promise<Todo[]> {
         return this.todoRepo.UpdateTodo(data)
