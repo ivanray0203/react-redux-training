@@ -31,7 +31,6 @@ const TodoList = ({ todos }: TodoProps) => {
     }
     const AddTodoOnClick = () => {
         dispatch(addTodo(data))
-        dispatch(refreshTodo)
         setData({ ...data, id: 0, name: "" })
     }
     const [handleId, setHandleId] = useState(0)

@@ -13,7 +13,6 @@ const todoList = [
     { id: 1, name: "Study React Componets", isCompleted: false, date_created: "2021-04-01", number_of_days: 0 },
     { id: 2, name: "Study Redux", isCompleted: false, date_created: "2021-03-16", number_of_days: 0 },
 ]
-
 export class TodoRepositoryImpl implements TodoRepository {
     async GetTodos(): Promise<Todo[]> {
         return todoList.map(

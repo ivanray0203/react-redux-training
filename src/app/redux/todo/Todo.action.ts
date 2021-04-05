@@ -8,13 +8,14 @@ import {
     UPDATE_TODO_STATUS,
 } from "./Todo.types"
 import { TodoServiceImpl } from "../../../domain/usecases/TodoService"
-import { TodoRepositoryImpl } from "../../../data/repositories/TodoRepositoryImpl"
+// import { TodoRepositoryImpl } from "../../../data/repositories/TodoRepositoryImpl"
+import { TodoRepositoryLocalStorage } from "../../../data/repositories/TodoRepositoryLocalStorage"
 
 export const refreshTodo = async (dispatch: any) => {
     dispatch({ type: TODO_LIST_REQUEST })
 
     try {
-        const todoRepo = new TodoRepositoryImpl()
+        const todoRepo = new TodoRepositoryLocalStorage()
         const todoService = new TodoServiceImpl(todoRepo)
         const todo = await todoService.GetTodos()
         dispatch({ type: TODO_LIST_SUCCESS, payload: todo })
@@ -27,10 +28,11 @@ export const refreshTodo = async (dispatch: any) => {
 export const addTodo = (data: any) => {
     return async function (dispatch: any) {
         try {
-            const todoRepo = new TodoRepositoryImpl()
+            const todoRepo = new TodoRepositoryLocalStorage()
             const todoService = new TodoServiceImpl(todoRepo)
             await todoService.AddTodo(data).then(() => {
                 dispatch({ type: ADD_TODO_LIST })
+                dispatch(refreshTodo)
             })
         } catch (error) {
             console.log(error)
@@ -42,7 +44,7 @@ export const addTodo = (data: any) => {
 export const deleteTodo = (id: number) => {
     return async function (dispatch: any) {
         try {
-            const todoRepo = new TodoRepositoryImpl()
+            const todoRepo = new TodoRepositoryLocalStorage()
             const todoService = new TodoServiceImpl(todoRepo)
             await todoService.DeleteTodo(id).then(() => {
                 dispatch({ type: DELETE_TODO_LIST })
@@ -58,7 +60,7 @@ export const deleteTodo = (id: number) => {
 export const updateTodo = (data: any) => {
     return async function (dispatch: any) {
         try {
-            const todoRepo = new TodoRepositoryImpl()
+            const todoRepo = new TodoRepositoryLocalStorage()
             const todoService = new TodoServiceImpl(todoRepo)
             await todoService.UpdateTodo(data).then(() => {
                 dispatch({ type: UPDATE_TODO_LIST })
@@ -74,7 +76,7 @@ export const updateTodo = (data: any) => {
 export const updateTodoStatus = (data: any) => {
     return async function (dispatch: any) {
         try {
-            const todoRepo = new TodoRepositoryImpl()
+            const todoRepo = new TodoRepositoryLocalStorage()
             const todoService = new TodoServiceImpl(todoRepo)
             await todoService.UpdateStatus(data).then(() => {
                 dispatch({ type: UPDATE_TODO_STATUS })
