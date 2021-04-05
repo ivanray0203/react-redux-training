@@ -8,10 +8,14 @@ interface RootState {
 }
 const TodoList = ({ todos }: TodoProps) => {
     const [editable, setEditable] = useState(false)
+    const dateNow = new Date()
+    const todayDate = dateNow.toISOString().slice(0, 10)
     const [data, setData] = useState({
         id: 0,
         name: "",
         isCompleted: false,
+        date_created: todayDate,
+        number_of_days: 0,
     })
     const [toUpdate, setToUpdate] = useState({
         id: 0,
@@ -95,6 +99,9 @@ const TodoList = ({ todos }: TodoProps) => {
                     <div className={todos.isCompleted ? "col completed" : "col notCompleted"}>
                         {todos.isCompleted ? "COMPLETED" : "NOT COMPLETED"}
                     </div>
+                    <div className={todos.number_of_days ? "col" : "col completed"}>
+                        {todos.number_of_days == 0 ? "NEW TODO" : todos.number_of_days + " days since todo created"}
+                    </div>
                     <button className="btn btn-primary mx-1" onClick={() => editData(todos.id, todos.name)}>
                         Edit
                     </button>
@@ -108,6 +115,7 @@ const TodoList = ({ todos }: TodoProps) => {
 }
 
 const mapStateToProps = (state: RootState) => {
+    console.log(state.todos)
     return {
         todos: state.todos.todos,
     }

@@ -9,7 +9,16 @@ export class TodoServiceImpl implements TodoRepository {
     }
 
     async GetTodos(): Promise<Todo[]> {
-        return this.todoRepo.GetTodos()
+        const data = await this.todoRepo.GetTodos()
+        const date_now = new Date()
+        for (const i in data) {
+            const date_created = new Date(data[i].date_created).getTime()
+            const difference = date_now.getTime() - date_created
+            const number_of_days = Math.floor(difference / (1000 * 3600 * 24))
+            data[i].number_of_days = number_of_days
+        }
+
+        return data
     }
 
     async AddTodo(data: any): Promise<Todo[]> {

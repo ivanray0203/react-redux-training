@@ -22,4 +22,6 @@ export interface Todo {
     id: number
     name: string
     isCompleted: boolean
+    date_created: Date
+    number_of_days: number
 }
