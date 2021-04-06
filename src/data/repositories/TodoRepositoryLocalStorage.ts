@@ -2,7 +2,7 @@ import { Todo } from "../../domain/entities/Todo"
 import { TodoRepository } from "../../domain/repositories/TodoRepository"
 
 class todoDTO {
-    id = 0
+    id = ""
     name = ""
     isCompleted = false
     date_created = ""
@@ -10,8 +10,8 @@ class todoDTO {
 }
 
 const todoList = [
-    { id: 1, name: "React Js and Redux", isCompleted: false, date_created: "2021-04-01", number_of_days: 0 },
-    { id: 2, name: "LocalStorage", isCompleted: false, date_created: "2021-03-16", number_of_days: 0 },
+    { id: "1", name: "React Js and Redux", isCompleted: false, date_created: "2021-04-01", number_of_days: 0 },
+    { id: "2", name: "LocalStorage", isCompleted: false, date_created: "2021-03-16", number_of_days: 0 },
 ]
 
 localStorage.setItem("TodoList", JSON.stringify(todoList))

@@ -9,20 +9,21 @@ interface RootState {
 const TodoList = ({ todos }: TodoProps) => {
     const [editable, setEditable] = useState(false)
     const dateNow = new Date()
+    const randomId = new Date().getTime().toString()
     const todayDate = dateNow.toISOString().slice(0, 10)
     const [data, setData] = useState({
-        id: 0,
+        id: "",
         name: "",
         isCompleted: false,
         date_created: todayDate,
         number_of_days: 0,
     })
     const [toUpdate, setToUpdate] = useState({
-        id: 0,
+        id: "",
         name: "",
     })
     const handleOnChange = (e: any) => {
-        setData({ ...data, id: todos.length + 1, [e.target.name]: e.target.value, isCompleted: false })
+        setData({ ...data, id: randomId, [e.target.name]: e.target.value, isCompleted: false })
         setToUpdate({ ...data, id: handleId, [e.target.name]: e.target.value })
     }
     const dispatch = useDispatch()
@@ -31,28 +32,28 @@ const TodoList = ({ todos }: TodoProps) => {
     }
     const AddTodoOnClick = () => {
         dispatch(addTodo(data))
-        setData({ ...data, id: 0, name: "" })
+        setData({ ...data, id: "", name: "" })
     }
-    const [handleId, setHandleId] = useState(0)
+    const [handleId, setHandleId] = useState("")
     const DeleteTodo = (data: any) => {
         dispatch(deleteTodo(data))
     }
-    const editData = (id: number, name: string) => {
+    const editData = (id: string, name: string) => {
         setEditable(true)
         setHandleId(id)
-        setData({ ...data, id: 0, name: name })
+        setData({ ...data, id: id, name: name })
     }
     const CancelEdit = () => {
         setEditable(false)
-        setData({ ...data, id: 0, name: "" })
+        setData({ ...data, id: "", name: "" })
     }
     const UpdateData = () => {
         setToUpdate({ ...toUpdate, id: toUpdate.id, name: data.name })
         dispatch(updateTodo(toUpdate))
         setEditable(false)
-        setData({ ...data, id: 0, name: "" })
+        setData({ ...data, id: "", name: "" })
     }
-    const changeStatus = (id: number, isCompleted: boolean) => {
+    const changeStatus = (id: string, isCompleted: boolean) => {
         const updateDataStatus = {
             id: id,
             isCompleted: !isCompleted,
@@ -114,7 +115,6 @@ const TodoList = ({ todos }: TodoProps) => {
 }
 
 const mapStateToProps = (state: RootState) => {
-    console.log(state.todos)
     return {
         todos: state.todos.todos,
     }
